@@ -1,40 +1,41 @@
 import serial
 from datetime import datetime
 
-
 # -------------------------------
-#Crear fichero de prueba
-# -------------------------------
-
-
-filename = "datos_IMU_" + datetime.now().strftime("%Y%m%d_%H%M%S") + ".txt"     # nombre basado en la fecha/hora actual del PC.
-
-
-#abre el fichero en modo escritura, no si exixte lo crea.
-with open(filename, "w", encoding="utf-8") as f:    #abre el archivo y genera el handle f
-    f.write("Fichero generado correctamente\n")     #comprobar que el archivo se crea.
-    f.write("Acel_x;Acel_y;Acel_z;Gyro_x;Gyro_y;Gyro_z;Magne_x;Magne_y;Magne_z\n")
-
-print("Fichero creado correctamente")
-
-# -------------------------------
-#Abrir puerto serie
+# Crear fichero CSV con timestamp
 # -------------------------------
 
-ser = serial.Serial('COM15', 115200, timeout=1)     #abrimos el puerto serie
+filename = "datos_IMU_" + datetime.now().strftime("%Y%m%d_%H%M%S") + ".csv"
 
+# Creamos el archivo y escribimos cabecera
+with open(filename, "w", encoding="utf-8") as f:
+    f.write("timestamp_pc;Acel_x;Acel_y;Acel_z;Gyro_x;Gyro_y;Gyro_z;Magne_x;Magne_y;Magne_z\n")
+
+print("Fichero CSV creado correctamente:", filename)
+
+# -------------------------------
+# Abrir puerto serie
+# -------------------------------
+
+ser = serial.Serial('COM15', 115200, timeout=1)
 print("Conectado al puerto serie")
 
 try:
-    with open(filename, "a", encoding="utf-8") as f:  # abrimos el fichero en modo append con la "a"
+    with open(filename, "a", encoding="utf-8") as f:
         while True:
-            if ser.in_waiting > 0:      #comprobar que hay bytes que han llegado
-                line = ser.readline().decode('utf-8', errors='ignore').strip()  #leemos una linea del puerto serie, lee bytes hasta que encuentra \n y guardamos en line. con strp quitamos espacios
+            if ser.in_waiting > 0:
+                line = ser.readline().decode('utf-8', errors='ignore').strip()
 
-                if line:  # evitar líneas vacías
-                    print(line)
-                    f.write(line + "\n")  # añade al fichero en una linea nueva
-                    f.flush()  # asegurar escritura inmediata. forzandolo a escribirlo en ese momento
+                if line:
+                    # Timestamp del PC (con milisegundos)
+                    ts = datetime.now().strftime("%H:%M:%S.%f")[:-3]        #solo la hora para no ensuciar demasiado los datos
+
+                    # Guardar en CSV: timestamp + línea original
+                    out_line = ts + ";" + line
+
+                    print(out_line)
+                    f.write(out_line + "\n")
+                    f.flush()
 
 except KeyboardInterrupt:
     print("\nCerrando puerto...")
