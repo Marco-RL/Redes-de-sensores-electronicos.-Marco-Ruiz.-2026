@@ -14,23 +14,19 @@ void shell();
 void setup() {
   Serial.begin(115200);
 
-  // ESP32-S3 como MASTER I2C (hay que indicar pines)
-  //Wire.begin(I2C_SDA, I2C_SCL);
-
   bool ok = Wire.begin(I2C_SDA, I2C_SCL);
   if (ok) {
     Serial.println("I2C master iniciado correctamente");
   } else {
     Serial.println("ERROR iniciando I2C Master");
   }
-
   Wire.setClock(100000);   // 100 kHz para empezar (recomendado)
-
-  Serial.println("ESP32-S3 I2C MASTER listo");
 }
 
 void loop() {
-  if (Serial.available()) shell();
+  if (Serial.available()){
+    shell();
+  }
 
   if (led_cmd_pending) {
     Wire.beginTransmission(I2C_ADDR);
