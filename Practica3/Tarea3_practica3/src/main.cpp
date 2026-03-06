@@ -37,8 +37,6 @@ void loop() {
       Serial.println("Client connected!");
     }
   }
-
-  // Leer datos recibidos desde el móvil
   
   if (client && client.available()) {
     rxMessage = client.readStringUntil('\n');
@@ -50,7 +48,6 @@ void loop() {
     }
   }
 
-  // También puedes escribir desde el monitor serie al móvil
   if (Serial.available()) {
     String txMessage = Serial.readStringUntil('\n');
     txMessage.trim();
@@ -61,7 +58,6 @@ void loop() {
     }
   }
 
-  // Detectar desconexión
   if (client && !client.connected()) {
     Serial.println("Cliente desconectado");
     client.stop();
