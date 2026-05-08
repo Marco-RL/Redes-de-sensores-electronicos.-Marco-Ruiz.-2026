@@ -3,9 +3,9 @@
 
 // --- Credenciales WiFi y Adafruit IO ---
 #define WIFI_SSID     "Redmi Note 9S"
-#define WIFI_PASS     "aaaaaaaa"
-#define AIO_USERNAME  "Marco827133"
-#define AIO_KEY       "aio_nwsp67qibk2oHJJznEtXfR9x8rww"
+#define WIFI_PASS     "TU_PASSWORD"
+#define AIO_USERNAME  "TU_AIO_USERNAME"
+#define AIO_KEY       "TU_AIO_KEY"
 
 // Broker MQTT de Adafruit IO
 #define AIO_SERVER    "io.adafruit.com"
