@@ -1,5 +1,5 @@
 #include "BluetoothSerial.h"
-
+// diseño realizado para la esp32  az-delivery-devkit-v4 (placa propia, ya que la s3 no dispone de BLUETOOTH estandar)
 BluetoothSerial SerialBT;
 
 
